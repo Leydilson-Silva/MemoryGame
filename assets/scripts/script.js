@@ -12,11 +12,7 @@ let techs = ['bootstrap',
     'node',
     'react'];
 
-// {   
-//     id:asdakjdas
-//     icon: 'bootstrap',
-//     flipped: false
-// }
+
 createCardsFromTechs(techs);
 function createCardsFromTechs(techs) {
 
@@ -45,3 +41,4 @@ function createPairFromTechs(tech) {
 function createIdWithTech(tech) {
     return tech + parseInt(Math.random() * 100);
 }
+
