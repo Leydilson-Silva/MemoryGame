@@ -19,15 +19,14 @@ let techs = ['bootstrap',
 startGame();
 
 function startGame() {
-    cards = createCardsFromTechs(techs);
-    shuffleCards(cards);
-    initializeCards(cards);
+
+    initializeCards(game.createCardsFromTechs());
 }
 
 function initializeCards(cards) {
     let gameBoard = document.getElementById("gameBoard");
-
-    cards.forEach(card => {
+    gameBoard.innerHTML ='';   
+    game.cards.forEach(card => {
 
         let cardElement = document.createElement("div");
         cardElement.id = card.id;
@@ -67,49 +66,40 @@ function createCardFace(face, card, element) {
     element.appendChild(cardElementFace);
 }
 
-function shuffleCards(cards) {
-    let currentIndex = cards.length;
-    let randomIndex = 0;
 
-    while (currentIndex !== 0) {
-        randomIndex = Math.floor(Math.random() * currentIndex);
-        currentIndex--;
 
-        [cards[randomIndex], cards[currentIndex]] = [cards[currentIndex], cards[randomIndex]];
+function flipCard() {
+
+    if (game.setCard(this.id)) {
+
+        this.classList.add("flip");
+        if (game.secondCard) {
+            if (game.checkMatch()) {
+                game.clearCards();
+                if (game.checkGameOver()) {
+                    let gameOverLayer = document.getElementById("gameOver");
+                    gameOverLayer.style.display = 'flex';
+                }
+
+            } else {
+                setTimeout(() => {
+                    let firstCardView = document.getElementById(game.firstCard.id);
+                    let secondCardView = document.getElementById(game.secondCard.id);
+
+                    firstCardView.classList.remove('flip');
+                    secondCardView.classList.remove('flip');
+                    game.unflipCards();
+                }, 1000);
+
+            }
+
+        }
     }
-
 }
 
-
-function createCardsFromTechs(techs) {
-
-    let cards = [];
-
-    techs.forEach((tech) => {
-        cards.push(createPairFromTechs(tech));
-
-    })
-
-    return (cards.flatMap(pair => pair));
+function restartGame() {
+    game.clearCards();
+    startGame();
+    let gameOverLayer = document.getElementById("gameOver");
+    gameOverLayer.style.display = 'none';
 }
-
-function createPairFromTechs(tech) {
-    return [{
-        id: createIdWithTech(tech),
-        icon: tech,
-        flipped: false
-    }, {
-        id: createIdWithTech(tech),
-        icon: tech,
-        flipped: false
-
-    }]
-}
-
-function createIdWithTech(tech) {
-    return tech + parseInt(Math.random() * 100);
-}
-
-function flipCard(card) {
-    this.classList.add("flip");
-}   
