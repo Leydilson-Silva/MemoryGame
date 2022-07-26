@@ -1,2 +1,3 @@
 # MemoryGame
- Jogo da memoria
+ Jogo da memoria com icones DEV
+https://leydilson-silva.github.io/MemoryGame/
